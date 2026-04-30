@@ -29,6 +29,9 @@ FRONTEND_URL=https://YOUR-VERCEL-DOMAIN.vercel.app
 CORS_ALLOWED_ORIGINS=https://YOUR-VERCEL-DOMAIN.vercel.app
 LOG_CHANNEL=stderr
 LOG_STDERR_FORMATTER=Monolog\Formatter\JsonFormatter
+CMS_ADMIN_NAME="Field Forecast Admin"
+CMS_ADMIN_EMAIL=admin@fieldforecast.local
+CMS_ADMIN_PASSWORD=CHANGE_ME_NOW
 
 DB_CONNECTION=mysql
 DB_HOST=${{MySQL.MYSQLHOST}}
@@ -42,6 +45,8 @@ ODDS_API_KEY=REPLACE_WITH_YOUR_KEY
 ODDS_API_SPORT_KEYS=soccer_epl,soccer_uefa_champs_league
 QUEUE_CONNECTION=database
 ```
+
+The Railway pre-deploy script runs migrations and seeds the initial CMS admin from `CMS_ADMIN_*`.
 
 Generate a production app key locally from `backend` with:
 
@@ -79,6 +84,12 @@ Set this Vercel environment variable:
 NEXT_PUBLIC_API_BASE_URL=https://YOUR-RAILWAY-DOMAIN.up.railway.app
 ```
 
+The CMS editor will be available at:
+
+```text
+https://YOUR-VERCEL-DOMAIN.vercel.app/admin
+```
+
 After Vercel gives you the production URL, return to Railway and update:
 
 ```env
@@ -104,4 +115,3 @@ Frontend:
 npm install
 npm run build
 ```
-

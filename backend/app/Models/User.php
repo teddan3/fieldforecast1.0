@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
@@ -21,27 +22,33 @@ final class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'is_active',
+        'cms_token',
         'remember_token',
     ];
 
     protected $hidden = [
         'password',
+        'cms_token',
         'remember_token',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
     protected function setPasswordAttribute($value): void
     {
-        // If password is already hashed, leave it. Otherwise hash it.
         $hashed = (string) $value;
-        if (!Str::startsWith($hashed, ['$', 'bcrypt$'])) {
-            $this->attributes['password'] = $hashed;
+        if ($hashed === '') {
             return;
         }
-        $this->attributes['password'] = $value;
+
+        $this->attributes['password'] = Str::startsWith($hashed, ['$2y$', '$argon2'])
+            ? $hashed
+            : Hash::make($hashed);
     }
 }
 

@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->api(prepend: [
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);
+
+        $middleware->alias([
+            'cms.auth' => \App\Http\Middleware\CmsAuthenticate::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
